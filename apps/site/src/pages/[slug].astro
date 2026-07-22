@@ -6,7 +6,7 @@ import Layout from '@/components/layout.astro';
 import ConfigurationTable from '@/components/configuration-table.astro';
 import DeploymentSpec from '@/components/deployment-spec.astro';
 import PersistentStorageTable from '@/components/persistent-storage-table.astro';
-import SecurityTable from '@/components/security-table.astro';
+import { SecurityTabs } from '@/components/security-tabs';
 import TemplateInfo from '@/components/template-info.astro';
 import { FeatureTabs } from '@/components/feature-tabs';
 import { TemplateGallery } from '@/components/template-gallery';
@@ -237,7 +237,7 @@ toc.push({ depth: 2, title: 'Security', url: '#security' });
           <h2 id="security" class="mb-5 scroll-mt-24 text-2xl font-semibold">
             Security
           </h2>
-          <SecurityTable security={security} />
+          <SecurityTabs security={security} client:load />
         </section>
       </div>
 
