@@ -49,7 +49,7 @@ function Card({ template }: { template: TemplateCard }) {
         />
         <span className="relative flex items-center gap-3">
           <span
-            className="flex size-10 shrink-0 items-center justify-center rounded-[10px] p-1.5"
+            className="flex size-10 shrink-0 items-center justify-center rounded-[10px] border border-black/10 p-1.5 dark:border-transparent"
             style={{ backgroundColor: template.logoBg }}
           >
             <img src={template.logo} alt="" className="size-full object-contain" />
