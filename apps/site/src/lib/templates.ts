@@ -8,8 +8,11 @@ export interface TemplateCard {
   title: string;
   description: string;
   logo: string;
+  logoBg: string;
   categories: string[];
   featured: boolean;
+  featuredOrder: number;
+  by: 'coolify' | 'community' | 'creator';
 }
 
 /** Prefix a public-relative path (starting with `/`) with the site base path. */
@@ -37,7 +40,11 @@ export function toCard(template: Template): TemplateCard {
     title: template.data.title,
     description: template.data.description,
     logo: template.data.logo,
+    logoBg: template.data.logoBg,
     categories: template.data.categories,
-    featured: template.data.featured,
+    featured: template.data.featured !== false,
+    featuredOrder:
+      typeof template.data.featured === 'number' ? template.data.featured : Number.MAX_SAFE_INTEGER,
+    by: template.data.by,
   };
 }

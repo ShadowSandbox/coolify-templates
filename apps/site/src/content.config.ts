@@ -7,8 +7,11 @@ const templates = defineCollection({
     title: z.string(),
     description: z.string(),
     logo: z.string(),
+    logoBg: z.string().default('#ffffff'),
     categories: z.array(z.string()).default([]),
-    featured: z.boolean().default(false),
+    // false = not featured; a number both features the template and sets its order
+    featured: z.union([z.boolean(), z.number()]).default(false),
+    by: z.enum(['coolify', 'community', 'creator']).default('community'),
     services: z
       .array(
         z.object({
