@@ -13,6 +13,17 @@
   --color-fd-border: hsl(0 0% 12%);
 }
 
+/* Slow sweep with a long pause between passes */
+@keyframes verified-badge-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  35%,
+  100% {
+    transform: translateX(200%);
+  }
+}
+
 html {
   scrollbar-gutter: stable;
 }
