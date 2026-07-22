@@ -1,0 +1,223 @@
+---
+import { render } from 'astro:content';
+import defaultMdxComponents from 'fumadocs-ui/mdx';
+import Layout from '@/components/layout.astro';
+import {
+  deployUrl,
+  getTemplates,
+  templateUrl,
+  withBase,
+  type Template,
+} from '@/lib/templates';
+
+interface Props {
+  template: Template;
+}
+
+export async function getStaticPaths() {
+  return (await getTemplates()).map((template) => ({
+    params: { slug: template.id },
+    props: { template },
+  }));
+}
+
+const { template } = Astro.props;
+const { title, description, logo, categories, services, links, screenshots } = template.data;
+const { Content } = await render(template);
+const ogImage = withBase(`/og/${template.id}/image.webp`);
+
+const related = (await getTemplates())
+  .filter(
+    (t) => t.id !== template.id && t.data.categories.some((c) => categories.includes(c)),
+  )
+  .slice(0, 3);
+
+const resources = [
+  ['Website', links.website],
+  ['Documentation', links.docs],
+  ['GitHub', links.github],
+].filter((r): r is [string, string] => Boolean(r[1]));
+---
+
+<Layout>
+  <title>{title} — Coolify Templates</title>
+  <meta name="description" content={description} />
+  <meta property="og:title" content={title} />
+  <meta property="og:description" content={description} />
+  <meta property="og:image" content={ogImage} />
+  <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-10 sm:px-6">
+    <nav class="flex items-center gap-2 text-sm text-fd-muted-foreground">
+      <a href={withBase('/')} class="hover:text-fd-foreground transition-colors">Templates</a>
+      <span>/</span>
+      <span class="text-fd-foreground">{title}</span>
+    </nav>
+
+    <header class="mt-8 flex flex-wrap items-start justify-between gap-6">
+      <div class="flex items-center gap-4">
+        <div class="flex size-16 items-center justify-center rounded-xl border border-fd-border bg-fd-card p-3">
+          <img src={logo} alt="" class="size-full object-contain" />
+        </div>
+        <div>
+          <h1 class="text-3xl font-bold sm:text-4xl">{title}</h1>
+          <p class="mt-1 text-lg text-fd-muted-foreground">{description}</p>
+        </div>
+      </div>
+      <a
+        href={deployUrl(template.id)}
+        class="inline-flex items-center gap-2 rounded-lg bg-fd-primary px-5 py-2.5 font-medium text-fd-primary-foreground transition-opacity hover:opacity-90"
+      >
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" class="size-4">
+          <path d="M13 2 3 14h7l-1 8 10-12h-7z" stroke-linejoin="round"></path>
+        </svg>
+        Deploy to Coolify
+      </a>
+    </header>
+
+    <div class="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_260px]">
+      <div class="flex flex-col gap-12">
+        {
+          screenshots.length > 0 && (
+            <section>
+              <h2 class="mb-4 text-xl font-semibold">Preview</h2>
+              <div class="flex flex-col gap-4">
+                <img
+                  src={withBase(screenshots[0]!.src)}
+                  alt={screenshots[0]!.alt}
+                  class="w-full rounded-xl border border-fd-border"
+                />
+                {screenshots.length > 1 && (
+                  <div class="grid grid-cols-2 gap-4 sm:grid-cols-3">
+                    {screenshots.slice(1).map((shot) => (
+                      <img
+                        src={withBase(shot.src)}
+                        alt={shot.alt}
+                        class="w-full rounded-lg border border-fd-border"
+                      />
+                    ))}
+                  </div>
+                )}
+              </div>
+            </section>
+          )
+        }
+
+        <section class="prose max-w-none">
+          <Content components={{ ...defaultMdxComponents }} />
+        </section>
+
+        {
+          services.length > 0 && (
+            <section>
+              <h2 class="mb-4 text-xl font-semibold">Template content</h2>
+              <ul class="flex flex-col gap-3">
+                {services.map((service) => (
+                  <li class="flex items-center gap-4 rounded-xl border border-fd-border bg-fd-card px-5 py-4">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.5"
+                      class="size-6 shrink-0 text-fd-muted-foreground"
+                    >
+                      <path
+                        d="m21 8-9-5-9 5v8l9 5 9-5zM3 8l9 5m0 0 9-5m-9 5v9"
+                        stroke-linejoin="round"
+                      />
+                    </svg>
+                    <div>
+                      <p class="font-medium">{service.name}</p>
+                      <p class="text-sm text-fd-muted-foreground">{service.image}</p>
+                    </div>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </div>
+
+      <aside class="flex flex-col gap-8 lg:border-l lg:border-fd-border lg:pl-8">
+        <section>
+          <h2 class="mb-3 text-sm font-semibold text-fd-muted-foreground">Categories</h2>
+          <div class="flex flex-wrap gap-1.5">
+            {
+              categories.map((category) => (
+                <span class="rounded-full border border-fd-border px-2.5 py-0.5 text-sm">
+                  {category}
+                </span>
+              ))
+            }
+          </div>
+        </section>
+        <section>
+          <h2 class="mb-3 text-sm font-semibold text-fd-muted-foreground">Services</h2>
+          <p class="text-sm">
+            {services.length} service{services.length === 1 ? '' : 's'} in this template
+          </p>
+        </section>
+        {
+          resources.length > 0 && (
+            <section>
+              <h2 class="mb-3 text-sm font-semibold text-fd-muted-foreground">Resources</h2>
+              <ul class="flex flex-col gap-2 text-sm">
+                {resources.map(([label, href]) => (
+                  <li>
+                    <a
+                      href={href}
+                      class="inline-flex items-center gap-1.5 text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+                    >
+                      {label}
+                      <svg
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        class="size-3.5"
+                      >
+                        <path d="M7 17 17 7M9 7h8v8" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </section>
+          )
+        }
+      </aside>
+    </div>
+
+    {
+      related.length > 0 && (
+        <section class="mt-20 border-t border-fd-border pt-10">
+          <div class="mb-6 flex items-center justify-between">
+            <h2 class="text-xl font-semibold">You might also like</h2>
+            <a
+              href={withBase('/')}
+              class="text-sm text-fd-muted-foreground transition-colors hover:text-fd-foreground"
+            >
+              Browse all templates →
+            </a>
+          </div>
+          <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {related.map((t) => (
+              <a
+                href={templateUrl(t.id)}
+                class="group flex flex-col gap-3 rounded-xl border border-fd-border bg-fd-card p-5 transition-colors hover:border-fd-ring/60 hover:bg-fd-accent"
+              >
+                <img src={t.data.logo} alt="" class="size-10 rounded-lg object-contain" />
+                <div>
+                  <h3 class="font-semibold transition-colors group-hover:text-fd-primary">
+                    {t.data.title}
+                  </h3>
+                  <p class="mt-1 line-clamp-2 text-sm text-fd-muted-foreground">
+                    {t.data.description}
+                  </p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </section>
+      )
+    }
+  </main>
+</Layout>
