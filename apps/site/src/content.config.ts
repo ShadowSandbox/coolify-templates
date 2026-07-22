@@ -27,6 +27,41 @@ const templates = defineCollection({
         github: z.string().url().optional(),
       })
       .default({}),
+    // Dummy feature lists until the real backend supplies them.
+    features: z
+      .object({
+        application: z.array(z.string()),
+        template: z.array(z.string()),
+      })
+      .default({
+        application: [
+          'Fast and lightweight, runs comfortably on small servers',
+          'REST API with token authentication',
+          'Built-in web dashboard',
+          'Role-based access control',
+        ],
+        template: [
+          'One-click deploy with sensible defaults',
+          'Persistent storage preconfigured',
+          'Automatic HTTPS via the Coolify proxy',
+          'Health checks and restart policy included',
+          'Secrets generated on first deploy',
+        ],
+      }),
+    // Dummy deployment manifest until the real backend supplies it.
+    deployment: z
+      .object({
+        publicEndpoints: z.array(z.string()).default([]),
+        internalPorts: z.array(z.object({ port: z.number(), label: z.string() })).default([]),
+        volumes: z.array(z.object({ name: z.string(), path: z.string() })).default([]),
+        architectures: z.array(z.string()).default([]),
+      })
+      .default({
+        publicEndpoints: ['Web dashboard'],
+        internalPorts: [{ port: 3000, label: 'Web dashboard' }],
+        volumes: [{ name: 'data', path: '/data' }],
+        architectures: ['AMD64', 'ARM64'],
+      }),
     // Dummy registry stats until the real backend supplies them.
     stats: z
       .object({
