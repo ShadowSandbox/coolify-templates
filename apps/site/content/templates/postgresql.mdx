@@ -21,21 +21,8 @@ screenshots:
   - src: /screenshots/mcp-setup.webp
     alt: MCP setup
 ---
-
 ## Overview
 
 PostgreSQL is a powerful, open-source object-relational database with over 35 years of active development. It is the default choice for most production applications thanks to its reliability, feature robustness, and performance.
 
 This template deploys a single PostgreSQL 17 instance with a generated password and a persistent volume for data.
-
-## Connecting
-
-Other services in the same project can connect using:
-
-```bash
-postgres://postgres:$POSTGRES_PASSWORD@postgresql:5432/postgres
-```
-
-## Backups
-
-Coolify's built-in scheduled backups work with this template out of the box — configure them from the resource's **Backups** tab.

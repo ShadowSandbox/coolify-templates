@@ -22,18 +22,8 @@ screenshots:
   - src: /screenshots/mcp-setup.webp
     alt: MCP setup
 ---
-
 ## Overview
 
 MinIO is a high-performance object storage server with full Amazon S3 API compatibility. Use it as the storage backend for backups, user uploads, media files, or any S3-compatible tooling.
 
 This template deploys a single-node MinIO instance with the web console enabled and a persistent volume for buckets.
-
-## Connecting
-
-Point any S3 client at the API endpoint with the generated root credentials:
-
-```bash
-mc alias set local https://minio.your-domain $MINIO_ROOT_USER $MINIO_ROOT_PASSWORD
-mc mb local/backups
-```
