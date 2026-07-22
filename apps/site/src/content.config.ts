@@ -128,6 +128,19 @@ const templates = defineCollection({
           { label: 'S3 API', value: 'Not public unless the user assigns a domain' },
         ],
       }),
+    support: z
+      .object({
+        applicationProblems: z.array(z.string()),
+      })
+      .default({
+        applicationProblems: [
+          'Application behaviour',
+          'API usage',
+          'Access policies',
+          'Application configuration',
+          'Application bugs',
+        ],
+      }),
     // Dummy registry stats until the real backend supplies them.
     stats: z
       .object({

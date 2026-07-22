@@ -7,6 +7,7 @@ import ConfigurationTable from '@/components/configuration-table.astro';
 import DeploymentSpec from '@/components/deployment-spec.astro';
 import PersistentStorageTable from '@/components/persistent-storage-table.astro';
 import { SecurityTabs } from '@/components/security-tabs';
+import { SupportTabs } from '@/components/support-tabs';
 import TemplateInfo from '@/components/template-info.astro';
 import { FeatureTabs } from '@/components/feature-tabs';
 import { TemplateGallery } from '@/components/template-gallery';
@@ -46,6 +47,7 @@ const {
   deployment,
   configuration,
   security,
+  support,
 } = template.data;
 
 const serviceLinks = [
@@ -74,6 +76,7 @@ if (deployment.volumes.length > 0) {
   toc.push({ depth: 2, title: 'Persistent storage', url: '#persistent-storage' });
 }
 toc.push({ depth: 2, title: 'Security', url: '#security' });
+toc.push({ depth: 2, title: 'Support', url: '#support' });
 ---
 
 <Layout>
@@ -238,6 +241,19 @@ toc.push({ depth: 2, title: 'Security', url: '#security' });
             Security
           </h2>
           <SecurityTabs security={security} client:load />
+        </section>
+
+        <section>
+          <h2 id="support" class="mb-5 scroll-mt-24 text-2xl font-semibold">
+            Support
+          </h2>
+          <SupportTabs
+            application={title}
+            applicationProblems={support?.applicationProblems}
+            docs={links.docs}
+            repository={links.github}
+            client:load
+          />
         </section>
       </div>
 
