@@ -2,6 +2,17 @@
 @import 'fumadocs-ui/css/neutral.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* Near pitch-black theme instead of fumadocs' grey dark palette */
+.dark {
+  --color-fd-background: hsl(0 0% 1.5%);
+  --color-fd-card: hsl(0 0% 5.5%);
+  --color-fd-popover: hsl(0 0% 5.5%);
+  --color-fd-muted: hsl(0 0% 8%);
+  --color-fd-secondary: hsl(0 0% 8%);
+  --color-fd-accent: hsl(0 0% 9%);
+  --color-fd-border: hsl(0 0% 12%);
+}
+
 html {
   scrollbar-gutter: stable;
 }
