@@ -1,0 +1,39 @@
+---
+interface Props {
+  items: {
+    env: string;
+    required: boolean;
+    description: string;
+  }[];
+}
+
+const { items } = Astro.props;
+---
+
+<div class="prose max-w-none overflow-x-auto">
+  <table class="table-fixed" style="margin-block: 0;">
+    <colgroup>
+      <col class="w-52" />
+      <col class="w-24" />
+      <col />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Environment variable</th>
+        <th>Required</th>
+        <th>Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        items.map((item) => (
+          <tr>
+            <td><code>{item.env}</code></td>
+            <td>{item.required ? 'Yes' : 'No'}</td>
+            <td>{item.description}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

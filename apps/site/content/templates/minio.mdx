@@ -18,6 +18,7 @@ deployment:
   volumes:
     - name: minio-data
       path: /data
+      contains: Buckets, objects and MinIO configuration.
   architectures: [AMD64, ARM64]
 links:
   website: https://min.io

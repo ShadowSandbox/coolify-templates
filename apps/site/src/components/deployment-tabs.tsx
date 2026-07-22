@@ -6,7 +6,7 @@ import { Tab, Tabs } from './tabs';
 export interface DeploymentInfo {
   publicEndpoints: string[];
   internalPorts: { port: number; label: string }[];
-  volumes: { name: string; path: string }[];
+  volumes: { name: string; path: string; contains: string }[];
   architectures: string[];
 }
 

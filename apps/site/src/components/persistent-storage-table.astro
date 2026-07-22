@@ -1,0 +1,39 @@
+---
+interface Props {
+  volumes: {
+    name: string;
+    path: string;
+    contains?: string;
+  }[];
+}
+
+const { volumes } = Astro.props;
+---
+
+<div class="prose max-w-none overflow-x-auto">
+  <table class="table-fixed" style="margin-block: 0;">
+    <colgroup>
+      <col class="w-52" />
+      <col class="w-44" />
+      <col />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Container path</th>
+        <th>Volume</th>
+        <th>Contains</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        volumes.map((volume) => (
+          <tr>
+            <td><code>{volume.path}</code></td>
+            <td><code>{volume.name}</code></td>
+            <td>{volume.contains || 'Persistent application data.'}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

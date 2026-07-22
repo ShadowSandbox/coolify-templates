@@ -3,7 +3,9 @@ import { render } from 'astro:content';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import Layout from '@/components/layout.astro';
+import ConfigurationTable from '@/components/configuration-table.astro';
 import DeploymentSpec from '@/components/deployment-spec.astro';
+import PersistentStorageTable from '@/components/persistent-storage-table.astro';
 import TemplateInfo from '@/components/template-info.astro';
 import { FeatureTabs } from '@/components/feature-tabs';
 import { TemplateGallery } from '@/components/template-gallery';
@@ -41,6 +43,7 @@ const {
   links,
   features,
   deployment,
+  configuration,
 } = template.data;
 
 const serviceLinks = [
@@ -64,6 +67,10 @@ const toc: TOCItemType[] = headings.map((heading) => ({
 }));
 toc.push({ depth: 2, title: 'Features', url: '#features' });
 toc.push({ depth: 2, title: 'What gets deployed', url: '#what-gets-deployed' });
+toc.push({ depth: 2, title: 'Configuration', url: '#configuration' });
+if (deployment.volumes.length > 0) {
+  toc.push({ depth: 2, title: 'Persistent storage', url: '#persistent-storage' });
+}
 ---
 
 <Layout>
@@ -204,6 +211,24 @@ toc.push({ depth: 2, title: 'What gets deployed', url: '#what-gets-deployed' });
           </h2>
           <DeploymentSpec services={services} deployment={deployment} logo={logo} logoBg={logoBg} />
         </section>
+
+        <section>
+          <h2 id="configuration" class="mb-5 scroll-mt-24 text-2xl font-semibold">
+            Configuration
+          </h2>
+          <ConfigurationTable items={configuration} />
+        </section>
+
+        {
+          deployment.volumes.length > 0 && (
+            <section>
+              <h2 id="persistent-storage" class="mb-5 scroll-mt-24 text-2xl font-semibold">
+                Persistent storage
+              </h2>
+              <PersistentStorageTable volumes={deployment.volumes} />
+            </section>
+          )
+        }
       </div>
 
       <aside class="hidden lg:block">

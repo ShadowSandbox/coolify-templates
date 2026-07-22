@@ -53,15 +53,48 @@ const templates = defineCollection({
       .object({
         publicEndpoints: z.array(z.string()).default([]),
         internalPorts: z.array(z.object({ port: z.number(), label: z.string() })).default([]),
-        volumes: z.array(z.object({ name: z.string(), path: z.string() })).default([]),
+        volumes: z
+          .array(
+            z.object({
+              name: z.string(),
+              path: z.string(),
+              contains: z.string().default('Persistent application data.'),
+            }),
+          )
+          .default([]),
         architectures: z.array(z.string()).default([]),
       })
       .default({
         publicEndpoints: ['Web dashboard'],
         internalPorts: [{ port: 3000, label: 'Web dashboard' }],
-        volumes: [{ name: 'data', path: '/data' }],
+        volumes: [{ name: 'data', path: '/data', contains: 'Persistent application data.' }],
         architectures: ['AMD64', 'ARM64'],
       }),
+    configuration: z
+      .array(
+        z.object({
+          env: z.string(),
+          required: z.boolean(),
+          description: z.string(),
+        }),
+      )
+      .default([
+        {
+          env: 'APP_URL',
+          required: true,
+          description: 'Public URL used by the application.',
+        },
+        {
+          env: 'APP_SECRET',
+          required: true,
+          description: 'Secret used to sign sessions and application data.',
+        },
+        {
+          env: 'TZ',
+          required: false,
+          description: 'Timezone used by the application.',
+        },
+      ]),
     // Dummy registry stats until the real backend supplies them.
     stats: z
       .object({
