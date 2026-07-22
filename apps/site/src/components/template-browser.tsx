@@ -24,7 +24,7 @@ function Card({ template }: { template: TemplateCard }) {
     >
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-px rounded-[11px] opacity-0 blur-[8px] transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute -inset-px rounded-[11px] opacity-0 blur-[8px] transition-opacity duration-300 group-hover:opacity-50 dark:group-hover:opacity-100"
         style={{
           background:
             'radial-gradient(240px circle at var(--spot-x, 0%) var(--spot-y, 0%), rgba(134,79,252,0.55), transparent 70%)',
@@ -32,7 +32,7 @@ function Card({ template }: { template: TemplateCard }) {
       />
       <span
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 rounded-[10px] opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        className="pointer-events-none absolute inset-0 rounded-[10px] opacity-0 transition-opacity duration-300 group-hover:opacity-60 dark:group-hover:opacity-100"
         style={{
           background:
             'radial-gradient(320px circle at var(--spot-x, 0%) var(--spot-y, 0%), #c4b5fd, #864ffc 35%, rgba(134,79,252,0.35) 55%, transparent 80%)',
@@ -41,7 +41,7 @@ function Card({ template }: { template: TemplateCard }) {
       <span className="relative flex w-full flex-col overflow-hidden rounded-[9px] bg-fd-card p-5">
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-40 dark:group-hover:opacity-100"
           style={{
             background:
               'radial-gradient(340px circle at var(--spot-x, 0%) var(--spot-y, 0%), rgba(134,79,252,0.16), transparent 70%)',
