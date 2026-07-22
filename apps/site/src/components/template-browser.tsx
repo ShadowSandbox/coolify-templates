@@ -20,7 +20,7 @@ function Card({ template }: { template: TemplateCard }) {
       ref={ref}
       href={template.url}
       onMouseMove={onMouseMove}
-      className="group relative flex min-h-42 rounded-[10px] bg-fd-border p-px"
+      className="group relative flex min-h-42 rounded-[10px] bg-fd-border p-px hover:z-10"
     >
       <span
         aria-hidden="true"
@@ -38,10 +38,10 @@ function Card({ template }: { template: TemplateCard }) {
             'radial-gradient(320px circle at var(--spot-x, 0%) var(--spot-y, 0%), #c4b5fd, #864ffc 35%, rgba(134,79,252,0.35) 55%, transparent 80%)',
         }}
       />
-      <span className="relative flex w-full flex-col overflow-hidden rounded-[9px] bg-fd-card p-5">
+      <span className="relative flex w-full flex-col rounded-[9px] bg-fd-card p-5">
         <span
           aria-hidden="true"
-          className="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-300 group-hover:opacity-40 dark:group-hover:opacity-100"
+          className="pointer-events-none absolute inset-0 rounded-[9px] opacity-0 transition-opacity duration-300 group-hover:opacity-40 dark:group-hover:opacity-100"
           style={{
             background:
               'radial-gradient(340px circle at var(--spot-x, 0%) var(--spot-y, 0%), rgba(134,79,252,0.16), transparent 70%)',
