@@ -9,6 +9,7 @@ import PersistentStorageTable from '@/components/persistent-storage-table.astro'
 import { SecurityTabs } from '@/components/security-tabs';
 import { SupportTabs } from '@/components/support-tabs';
 import TemplateInfo from '@/components/template-info.astro';
+import { TemplateFeedback } from '@/components/template-feedback';
 import { FeatureTabs } from '@/components/feature-tabs';
 import { TemplateGallery } from '@/components/template-gallery';
 import { Toc } from '@/components/toc';
@@ -77,6 +78,10 @@ if (deployment.volumes.length > 0) {
 }
 toc.push({ depth: 2, title: 'Security', url: '#security' });
 toc.push({ depth: 2, title: 'Support', url: '#support' });
+toc.push({ depth: 2, title: 'Feedback', url: '#feedback' });
+
+const feedbackVariant = stats.variants[0] === 'default' ? 'Standard' : stats.variants[0];
+const feedbackVersion = stats.appVersions[0].replace(/\s*\(latest\)$/, '');
 ---
 
 <Layout>
@@ -252,6 +257,18 @@ toc.push({ depth: 2, title: 'Support', url: '#support' });
             applicationProblems={support?.applicationProblems}
             docs={links.docs}
             repository={links.github}
+            client:load
+          />
+        </section>
+
+        <section>
+          <h2 id="feedback" class="mb-5 scroll-mt-24 text-2xl font-semibold">
+            Feedback
+          </h2>
+          <TemplateFeedback
+            template={title}
+            variant={feedbackVariant}
+            version={feedbackVersion}
             client:load
           />
         </section>

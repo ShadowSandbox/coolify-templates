@@ -2,12 +2,23 @@
 import { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 
-export function Select({ label, options }: { label: string; options: string[] }) {
+export function Select({
+  label,
+  options,
+  value,
+  onChange,
+}: {
+  label: string;
+  options: string[];
+  value?: string;
+  onChange?: (value: string) => void;
+}) {
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(options[0] ?? '');
+  const [internalValue, setInternalValue] = useState(options[0] ?? '');
   const [rect, setRect] = useState<{ top: number; left: number; width: number } | null>(null);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const selectedValue = value ?? internalValue;
 
   function toggle() {
     if (!open) {
@@ -57,7 +68,7 @@ export function Select({ label, options }: { label: string; options: string[] })
           open ? 'border-[#864ffc]' : 'border-fd-border'
         }`}
       >
-        <span className="truncate">{value}</span>
+        <span className="truncate">{selectedValue}</span>
         <svg
           viewBox="0 0 24 24"
           fill="none"
@@ -87,17 +98,18 @@ export function Select({ label, options }: { label: string; options: string[] })
                 key={option}
                 type="button"
                 role="option"
-                aria-selected={option === value}
+                aria-selected={option === selectedValue}
                 onClick={() => {
-                  setValue(option);
+                  setInternalValue(option);
+                  onChange?.(option);
                   setOpen(false);
                 }}
                 className={`flex w-full items-center justify-between gap-2 rounded-md px-2.5 py-1.5 text-left text-sm transition-colors hover:bg-fd-accent ${
-                  option === value ? 'font-medium text-fd-foreground' : 'text-fd-muted-foreground'
+                  option === selectedValue ? 'font-medium text-fd-foreground' : 'text-fd-muted-foreground'
                 }`}
               >
                 <span className="truncate">{option}</span>
-                {option === value && (
+                {option === selectedValue && (
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
