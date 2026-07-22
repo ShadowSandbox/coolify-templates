@@ -36,13 +36,15 @@ const templates = defineCollection({
           url: z.string().url(),
         }),
         variants: z.array(z.string()),
-        versions: z.array(z.string()),
+        templateVersions: z.array(z.string()),
+        appVersions: z.array(z.string()),
       })
       .default({
         lastUpdated: '2026-07-18',
         updatedBy: { name: 'ShadowArcanist', url: 'https://github.com/ShadowArcanist' },
         variants: ['default', 'with workers'],
-        versions: ['2.4.1 (latest)', '2.4.0', '2.3.7', '2.3.2', '2.2.0'],
+        templateVersions: ['1.2.0 (latest)', '1.1.3', '1.0.0'],
+        appVersions: ['2.4.1 (latest)', '2.4.0', '2.3.7', '2.3.2', '2.2.0'],
       }),
     screenshots: z
       .array(

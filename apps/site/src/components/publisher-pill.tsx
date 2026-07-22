@@ -15,11 +15,20 @@ const PUBLISHER_TOOLTIP: Record<Publisher, string> = {
 
 };
 
-export function PublisherPill({ publisher }: { publisher: Publisher }) {
+export function PublisherPill({
+  publisher,
+  showBy = true,
+}: {
+  publisher: Publisher;
+  /** Render "By Coolify" (default) or just "Coolify". */
+  showBy?: boolean;
+}) {
+  const label = showBy ? PUBLISHER_LABEL[publisher] : PUBLISHER_LABEL[publisher].replace(/^By /, '');
+
   return (
     <span className="group/pill relative inline-flex">
       <span className="relative inline-flex items-center gap-1 overflow-hidden rounded-full border border-fd-border bg-fd-muted px-2 py-0.5 text-xs text-fd-muted-foreground">
-        {PUBLISHER_LABEL[publisher]}
+        {label}
         {publisher === 'creator' && (
           <VerifiedBadge size="sm" variant="static" tone="neutral" decorative />
         )}
@@ -40,7 +49,7 @@ export function PublisherPill({ publisher }: { publisher: Publisher }) {
       </span>
       <span
         role="tooltip"
-        className="pointer-events-none absolute left-0 top-full z-20 mt-2 w-max max-w-64 translate-y-1 rounded-lg border border-fd-border bg-fd-popover px-3 py-2 text-xs leading-relaxed text-fd-foreground/90 opacity-0 shadow-[0_1px_0_rgba(255,255,255,0.04)_inset,0_12px_32px_rgba(0,0,0,0.6)] transition-all delay-150 duration-200 group-hover/pill:translate-y-0 group-hover/pill:opacity-100"
+        className="pointer-events-none absolute left-0 top-full z-20 mt-2 w-max max-w-64 translate-y-1 rounded-lg border border-fd-border bg-fd-popover px-3 py-2 text-xs leading-relaxed text-fd-foreground/90 opacity-0 shadow-[0_4px_12px_rgba(0,0,0,0.2)] transition-all delay-150 duration-200 group-hover/pill:translate-y-0 group-hover/pill:opacity-100"
       >
         <span
           aria-hidden="true"

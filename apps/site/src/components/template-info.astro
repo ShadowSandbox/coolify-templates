@@ -1,0 +1,82 @@
+---
+import { PublisherPill, type Publisher } from './publisher-pill';
+import { Select } from './select';
+
+interface Props {
+  by: Publisher;
+  stats: {
+    lastUpdated: string;
+    updatedBy: { name: string; url: string };
+    variants: string[];
+    templateVersions: string[];
+    appVersions: string[];
+  };
+}
+
+const { by, stats } = Astro.props;
+
+const updatedAt = new Date(stats.lastUpdated);
+const updatedAtLabel = updatedAt.toLocaleDateString('en-US', {
+  month: 'short',
+  day: 'numeric',
+  year: 'numeric',
+});
+
+function relativeTime(date: Date): string {
+  const days = Math.floor((Date.now() - date.getTime()) / 86_400_000);
+  if (days <= 0) return 'today';
+  if (days === 1) return 'yesterday';
+  if (days < 30) return `${days} days ago`;
+  const months = Math.floor(days / 30);
+  if (months < 12) return months === 1 ? 'a month ago' : `${months} months ago`;
+  const years = Math.floor(months / 12);
+  return years === 1 ? 'a year ago' : `${years} years ago`;
+}
+
+const cell = 'flex flex-col justify-center gap-1.5 bg-fd-card px-4 py-3';
+const label = 'text-xs text-fd-muted-foreground';
+
+const selects: [string, string[]][] = [
+  ['Variant', stats.variants],
+  ['Template version', stats.templateVersions],
+  ['App version', stats.appVersions],
+];
+---
+
+<section
+  aria-label="Template info"
+  class="grid grid-cols-1 gap-px overflow-hidden rounded-xl border border-fd-border bg-fd-border sm:grid-cols-2 lg:grid-cols-3"
+>
+  <div class={cell}>
+    <p class={label}>Maintained by</p>
+    <p class="-ml-1"><PublisherPill publisher={by} showBy={false} /></p>
+  </div>
+
+  <div class={cell}>
+    <p class={label}>Last updated</p>
+    <p class="text-sm font-medium">
+      {relativeTime(updatedAt)}
+      <span class="font-normal text-fd-muted-foreground">· {updatedAtLabel}</span>
+    </p>
+  </div>
+
+  <div class={cell}>
+    <p class={label}>Last updated by</p>
+    <a
+      href={stats.updatedBy.url}
+      class="flex items-center gap-1.5 text-sm font-medium transition-colors hover:text-[#864ffc]"
+    >
+      <img src={`${stats.updatedBy.url}.png?size=40`} alt="" class="size-4 rounded-full" />
+      {stats.updatedBy.name}
+    </a>
+  </div>
+
+  {
+    selects.map(([name, options]) => (
+      <div class={cell}>
+        <p class={label}>{name}</p>
+        <Select label={name} options={options} client:load />
+      </div>
+    ))
+  }
+</section>
