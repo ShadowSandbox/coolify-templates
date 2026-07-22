@@ -21,6 +21,7 @@
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-medium-image-zoom": "^5.4.8",
+    "reicon-react": "^1.1.302",
     "sharp": "0.35.3",
     "takumi-js": "2.1.1"
   },
