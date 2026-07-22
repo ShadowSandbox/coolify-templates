@@ -3,6 +3,9 @@ import { render } from 'astro:content';
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { TOCItemType } from 'fumadocs-core/toc';
 import Layout from '@/components/layout.astro';
+import DeploymentSpec from '@/components/deployment-spec.astro';
+import TemplateInfo from '@/components/template-info.astro';
+import { FeatureTabs } from '@/components/feature-tabs';
 import { TemplateGallery } from '@/components/template-gallery';
 import { Toc } from '@/components/toc';
 import {
@@ -25,7 +28,26 @@ export async function getStaticPaths() {
 }
 
 const { template } = Astro.props;
-const { title, description, logo, logoBg, categories, services, screenshots } = template.data;
+const {
+  title,
+  description,
+  logo,
+  logoBg,
+  categories,
+  services,
+  screenshots,
+  by,
+  stats,
+  links,
+  features,
+  deployment,
+} = template.data;
+
+const serviceLinks = [
+  { label: 'Official website', href: links.website, icon: 'globe' },
+  { label: 'Documentation', href: links.docs, icon: 'book' },
+  { label: 'Source repository', href: links.github, icon: 'github' },
+].filter((l): l is { label: string; href: string; icon: string } => Boolean(l.href));
 const { Content, headings } = await render(template);
 const ogImage = withBase(`/og/${template.id}/image.webp`);
 
@@ -40,9 +62,8 @@ const toc: TOCItemType[] = headings.map((heading) => ({
   title: heading.text,
   url: `#${heading.slug}`,
 }));
-if (services.length > 0) {
-  toc.push({ depth: 2, title: "What's inside", url: '#whats-inside' });
-}
+toc.push({ depth: 2, title: 'Features', url: '#features' });
+toc.push({ depth: 2, title: 'What gets deployed', url: '#what-gets-deployed' });
 ---
 
 <Layout>
@@ -81,78 +102,108 @@ if (services.length > 0) {
           </div>
           <h1 class="truncate text-[28px] font-semibold tracking-tight">{title}</h1>
         </div>
-        <a
-          href={deployUrl(template.id)}
-          class="inline-flex shrink-0 items-center gap-2 rounded-lg bg-[#864ffc] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#7440e0]"
-        >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            class="size-4"
+        <div class="flex shrink-0 items-center gap-2">
+          <a
+            href={deployUrl(template.id)}
+            class="inline-flex items-center gap-2 rounded-lg bg-[#864ffc] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#7440e0]"
           >
-            <path d="M13 2 3 14h7l-1 8 10-12h-7z" stroke-linejoin="round"></path>
-          </svg>
-          Deploy to Coolify
-        </a>
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              class="size-4"
+            >
+              <path d="M13 2 3 14h7l-1 8 10-12h-7z" stroke-linejoin="round"></path>
+            </svg>
+            Deploy to Coolify
+          </a>
+          {
+            serviceLinks.map((link) => (
+              <a
+                href={link.href}
+                title={link.label}
+                aria-label={link.label}
+                class="grid size-9 place-items-center rounded-lg border border-fd-border text-fd-muted-foreground transition-colors hover:bg-fd-accent hover:text-fd-foreground"
+              >
+                {link.icon === 'globe' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    class="size-4"
+                  >
+                    <circle cx="12" cy="12" r="9" />
+                    <path d="M3 12h18M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18" />
+                  </svg>
+                )}
+                {link.icon === 'book' && (
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="size-4"
+                  >
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4a2 2 0 0 0-2-2H6.5A2.5 2.5 0 0 0 4 4.5v15A2.5 2.5 0 0 0 6.5 22H20v-2.5H6.5a1 1 0 0 1 0-2" />
+                  </svg>
+                )}
+                {link.icon === 'github' && (
+                  <svg viewBox="0 0 24 24" fill="currentColor" class="size-4">
+                    <path d="M12 .5C5.65.5.5 5.65.5 12c0 5.08 3.29 9.39 7.86 10.91.58.11.79-.25.79-.55v-2.17c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.68-1.28-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.19 1.76 1.19 1.02 1.75 2.69 1.25 3.34.95.11-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.68 0-1.26.45-2.28 1.19-3.09-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.17 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.83 1.19 3.09 0 4.41-2.7 5.38-5.27 5.67.41.36.78 1.06.78 2.14v3.17c0 .3.21.67.8.55A11.51 11.51 0 0 0 23.5 12C23.5 5.65 18.35.5 12 .5Z" />
+                  </svg>
+                )}
+              </a>
+            ))
+          }
+        </div>
       </div>
     </div>
   </div>
   <main class="mx-auto w-full max-w-7xl flex-1 px-4 py-12 sm:px-6">
     <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_220px]">
       <div class="flex flex-col gap-14">
-        {
-          galleryImages.length > 0 && (
-            <div>
-              <div
-                id="gallery-fallback"
-                class="flex aspect-video items-center justify-center rounded-xl border border-fd-border bg-fd-card"
-                aria-hidden="true"
-              >
+        <div class="flex flex-col gap-6">
+          {
+            galleryImages.length > 0 && (
+              <div>
                 <div
-                  class="size-8 animate-spin rounded-full border-2 border-fd-border border-t-[#864ffc]"
+                  id="gallery-fallback"
+                  class="flex aspect-video items-center justify-center rounded-xl border border-fd-border bg-fd-card"
+                  aria-hidden="true"
                 >
+                  <div class="size-8 animate-spin rounded-full border-2 border-fd-border border-t-[#864ffc]" />
                 </div>
+                <TemplateGallery images={galleryImages} client:only="react" />
               </div>
-              <TemplateGallery images={galleryImages} client:only="react" />
-            </div>
-          )
-        }
+            )
+          }
+
+          <TemplateInfo by={by} stats={stats} />
+        </div>
 
         <section class="prose max-w-none">
           <Content components={{ ...defaultMdxComponents }} />
         </section>
 
-        {
-          services.length > 0 && (
-            <section>
-              <h2 id="whats-inside" class="mb-4 scroll-mt-24 text-2xl font-semibold">What's inside</h2>
-              <ul class="flex flex-col gap-3">
-                {services.map((service) => (
-                  <li class="flex items-center gap-4 rounded-xl border border-fd-border bg-fd-card px-5 py-4">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.5"
-                      class="size-5 shrink-0 text-fd-muted-foreground"
-                    >
-                      <path
-                        d="m21 8-9-5-9 5v8l9 5 9-5zM3 8l9 5m0 0 9-5m-9 5v9"
-                        stroke-linejoin="round"
-                      />
-                    </svg>
-                    <div>
-                      <p class="text-sm font-medium">{service.name}</p>
-                      <p class="text-xs text-fd-muted-foreground">{service.image}</p>
-                    </div>
-                  </li>
-                ))}
-              </ul>
-            </section>
-          )
-        }
+        <section>
+          <h2 id="features" class="mb-5 scroll-mt-24 text-2xl font-semibold">Features</h2>
+          <FeatureTabs
+            application={features.application}
+            template={features.template}
+            client:load
+          />
+        </section>
+
+        <section>
+          <h2 id="what-gets-deployed" class="mb-5 scroll-mt-24 text-2xl font-semibold">
+            What gets deployed
+          </h2>
+          <DeploymentSpec services={services} deployment={deployment} logo={logo} logoBg={logoBg} />
+        </section>
       </div>
 
       <aside class="hidden lg:block">
