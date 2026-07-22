@@ -1,0 +1,59 @@
+---
+title: Sentry
+description: Self-hosted error tracking and performance monitoring for your applications.
+logo: https://cdn.simpleicons.org/sentry
+categories: [Monitoring]
+by: creator
+services:
+  - name: web
+    image: getsentry/sentry:24.4
+  - name: worker
+    image: getsentry/sentry:24.4
+  - name: cron
+    image: getsentry/sentry:24.4
+  - name: relay
+    image: getsentry/relay:24.4
+  - name: postgres
+    image: postgres:16
+  - name: redis
+    image: redis:7.2
+  - name: kafka
+    image: confluentinc/cp-kafka:7.6
+  - name: clickhouse
+    image: clickhouse/clickhouse-server:23
+deployment:
+  publicEndpoints: [Web dashboard]
+  internalPorts:
+    - port: 9000
+      label: Web dashboard
+    - port: 3021
+      label: Relay
+  volumes:
+    - name: sentry-data
+      path: /data
+    - name: postgres-data
+      path: /var/lib/postgresql/data
+    - name: kafka-data
+      path: /var/lib/kafka/data
+    - name: clickhouse-data
+      path: /var/lib/clickhouse
+  architectures: [AMD64]
+links:
+  website: https://sentry.io
+  docs: https://develop.sentry.dev/self-hosted/
+  github: https://github.com/getsentry/self-hosted
+screenshots:
+  - src: /screenshots/api-setup.webp
+    alt: API setup
+  - src: /screenshots/api-token-setup.webp
+    alt: API token setup
+  - src: /screenshots/create-api-token.webp
+    alt: Creating an API token
+  - src: /screenshots/mcp-setup.webp
+    alt: MCP setup
+---
+## Overview
+
+Sentry is the standard for self-hosted error tracking and performance monitoring. Capture exceptions, trace slow requests, and get release health across all your applications and services.
+
+This template deploys the full self-hosted Sentry stack: the web dashboard, background workers, cron, Relay for event ingestion, plus Postgres, Redis, Kafka, and ClickHouse.

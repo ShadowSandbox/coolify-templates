@@ -1,0 +1,58 @@
+---
+title: Supabase
+description: Open-source Firebase alternative with Postgres, auth, storage, and realtime APIs.
+logo: https://cdn.simpleicons.org/supabase
+logoBg: "#0f0f0f"
+categories: [Database]
+by: community
+services:
+  - name: studio
+    image: supabase/studio:latest
+  - name: kong
+    image: kong:2.8
+  - name: auth
+    image: supabase/gotrue:v2
+  - name: rest
+    image: postgrest/postgrest:v12
+  - name: realtime
+    image: supabase/realtime:v2
+  - name: storage
+    image: supabase/storage-api:v1
+  - name: db
+    image: supabase/postgres:15
+deployment:
+  publicEndpoints: [Studio, API gateway]
+  internalPorts:
+    - port: 3000
+      label: Studio
+    - port: 8000
+      label: API gateway
+    - port: 5432
+      label: Postgres
+  volumes:
+    - name: db-data
+      path: /var/lib/postgresql/data
+    - name: storage-data
+      path: /var/lib/storage
+    - name: kong-config
+      path: /usr/local/kong
+  architectures: [AMD64, ARM64]
+links:
+  website: https://supabase.com
+  docs: https://supabase.com/docs
+  github: https://github.com/supabase/supabase
+screenshots:
+  - src: /screenshots/api-setup.webp
+    alt: API setup
+  - src: /screenshots/api-token-setup.webp
+    alt: API token setup
+  - src: /screenshots/create-api-token.webp
+    alt: Creating an API token
+  - src: /screenshots/mcp-setup.webp
+    alt: MCP setup
+---
+## Overview
+
+Supabase is an open-source Firebase alternative built on Postgres. You get a full backend out of the box: database, authentication, auto-generated REST APIs, realtime subscriptions, and file storage — all self-hosted on your own server.
+
+This template deploys the full Supabase stack: Studio, the Kong API gateway, GoTrue auth, PostgREST, Realtime, the Storage API, and Postgres itself.
