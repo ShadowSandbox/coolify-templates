@@ -8,6 +8,17 @@ featured: 4
 services:
   - name: minio
     image: minio/minio:latest
+deployment:
+  publicEndpoints: [Administration console]
+  internalPorts:
+    - port: 9000
+      label: S3 API
+    - port: 9001
+      label: Administration console
+  volumes:
+    - name: minio-data
+      path: /data
+  architectures: [AMD64, ARM64]
 links:
   website: https://min.io
   docs: https://min.io/docs/minio/container/index.html
