@@ -1,0 +1,57 @@
+---
+title: Redis
+description: In-memory key-value store for caching, sessions, queues, and real-time workloads.
+logo: https://cdn.simpleicons.org/redis
+categories: [Database, Cache]
+featured: true
+services:
+  - name: redis
+    image: redis:7.4
+links:
+  website: https://redis.io
+  docs: https://redis.io/docs/latest/
+  github: https://github.com/redis/redis
+screenshots:
+  - src: /screenshots/redis-1.svg
+    alt: Redis running on Coolify
+  - src: /screenshots/redis-2.svg
+    alt: Redis resource configuration
+  - src: /screenshots/redis-3.svg
+    alt: Redis logs and metrics
+---
+
+## Overview
+
+Redis is an open-source, in-memory data store used by millions of developers as a cache, message broker, and database. One Redis instance can handle the most common app jobs: caching, sessions, rate limiting, queues, real-time updates, and pub/sub.
+
+This template deploys a single Redis service with persistence enabled, a randomly generated password, and a persistent volume for data — ready to connect from any other service in your Coolify project.
+
+## Features
+
+- **Blazing fast** — sub-millisecond reads and writes, entirely in memory
+- **Persistence out of the box** — AOF enabled so data survives restarts
+- **Password protected** — a strong password is generated on deploy
+- **Private networking** — reachable from your other services via the internal hostname
+
+## Connecting
+
+After deploying, other services in the same project can reach Redis at:
+
+```bash
+redis://default:$REDIS_PASSWORD@redis:6379
+```
+
+For a quick smoke test from the Coolify terminal:
+
+```bash
+redis-cli -a "$REDIS_PASSWORD" ping
+# PONG
+```
+
+## Persistence
+
+Data is stored in a persistent volume mounted at `/data`. Append-only file (AOF) persistence is enabled by default, so writes are replayed after a restart. For a pure cache workload you can disable it and set a `maxmemory` policy instead:
+
+```bash
+redis-cli config set maxmemory-policy allkeys-lru
+```

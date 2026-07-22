@@ -1,0 +1,30 @@
+---
+title: Umami
+description: Simple, privacy-focused alternative to Google Analytics.
+logo: https://cdn.simpleicons.org/umami
+categories: [Analytics]
+services:
+  - name: umami
+    image: ghcr.io/umami-software/umami:postgresql-latest
+  - name: postgresql
+    image: postgres:17
+links:
+  website: https://umami.is
+  docs: https://umami.is/docs
+  github: https://github.com/umami-software/umami
+screenshots:
+  - src: /screenshots/umami-1.svg
+    alt: Umami analytics dashboard
+---
+
+## Overview
+
+Umami is a simple, fast, privacy-focused web analytics tool. It collects only the metrics you care about, is fully GDPR compliant, and requires no cookie banner.
+
+This template deploys Umami with a PostgreSQL database.
+
+## First steps
+
+1. Log in with the default credentials (`admin` / `umami`) and change the password immediately.
+2. Add your website under **Settings → Websites**.
+3. Copy the tracking snippet into your site's `<head>`.

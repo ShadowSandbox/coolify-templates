@@ -1,0 +1,32 @@
+---
+title: Plausible
+description: Lightweight, open-source, privacy-friendly web analytics.
+logo: https://cdn.simpleicons.org/plausibleanalytics
+categories: [Analytics]
+services:
+  - name: plausible
+    image: ghcr.io/plausible/community-edition:v3
+  - name: postgresql
+    image: postgres:17
+  - name: clickhouse
+    image: clickhouse/clickhouse-server:24
+links:
+  website: https://plausible.io
+  docs: https://plausible.io/docs
+  github: https://github.com/plausible/analytics
+screenshots:
+  - src: /screenshots/plausible-1.svg
+    alt: Plausible analytics dashboard
+---
+
+## Overview
+
+Plausible is an intuitive, lightweight, and open-source web analytics platform. No cookies, fully GDPR compliant, and the tracking script is under 1 KB — 75x smaller than Google Analytics.
+
+This template deploys Plausible Community Edition with PostgreSQL for application data and ClickHouse for analytics storage.
+
+## First steps
+
+1. Open the generated domain and register the first admin account.
+2. Add your website and copy the script tag into your site's `<head>`.
+3. Optionally configure SMTP for email reports.
