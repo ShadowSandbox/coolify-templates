@@ -1,0 +1,26 @@
+---
+import Layout from '@/components/layout.astro';
+import { TemplateBrowser } from '@/components/template-browser';
+import { getTemplates, toCard } from '@/lib/templates';
+
+const templates = (await getTemplates()).map(toCard);
+---
+
+<Layout>
+  <title>Coolify Templates — Deploy a service in minutes</title>
+  <meta
+    name="description"
+    content="One-click, open-source service templates for Coolify. Search, pick, deploy."
+  />
+  <main class="mx-auto w-full max-w-7xl flex-1 px-4 sm:px-6">
+    <section class="py-16 text-center sm:py-24">
+      <h1 class="text-4xl font-bold tracking-tight sm:text-6xl">Deploy a service in minutes</h1>
+      <p class="mx-auto mt-4 max-w-xl text-lg text-fd-muted-foreground">
+        One-click, open-source templates for your Coolify instance. Search, pick, deploy.
+      </p>
+    </section>
+    <section class="pb-24">
+      <TemplateBrowser templates={templates} client:load />
+    </section>
+  </main>
+</Layout>
