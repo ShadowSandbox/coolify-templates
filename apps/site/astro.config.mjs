@@ -21,6 +21,7 @@ const remarkPlugins = [
 const rehypePlugins = [rehypeCode];
 
 export default defineConfig({
+  base: '/templates',
   markdown: {
     processor: unified({
       syntaxHighlight: false,
