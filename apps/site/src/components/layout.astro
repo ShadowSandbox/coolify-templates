@@ -12,7 +12,7 @@ import '@/styles/global.css';
     <ClientRouter />
   </head>
   <body
-    class="dark flex flex-col min-h-screen bg-fd-background text-fd-foreground"
+    class="dark relative flex flex-col min-h-screen bg-fd-background text-fd-foreground"
     transition:persist
     transition:animate="none"
     transition:name="page-layout"
@@ -33,17 +33,5 @@ import '@/styles/global.css';
       </div>
     </header>
     <slot />
-    <footer class="mt-auto border-t border-fd-border">
-      <div
-        class="mx-auto flex w-full max-w-7xl flex-col gap-2 px-4 py-8 text-sm text-fd-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6"
-      >
-        <p>Open-source, one-click service templates for Coolify.</p>
-        <p>
-          Maintained by the <a href="https://coolify.io" class="underline hover:text-fd-foreground"
-            >Coolify</a
-          > community.
-        </p>
-      </div>
-    </footer>
   </body>
 </html>
