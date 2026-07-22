@@ -1,0 +1,55 @@
+---
+interface Props {
+  security: {
+    privilegedMode: boolean;
+    dockerSocketAccess: boolean;
+    hostNetworking: boolean;
+    hostPidNamespace: boolean;
+    hostFilesystemMounts: boolean;
+    hostDevices: boolean;
+    additionalLinuxCapabilities: string[];
+  };
+}
+
+const { security } = Astro.props;
+
+const rows = [
+  ['Privileged mode', security.privilegedMode ? 'Yes' : 'No'],
+  ['Docker socket access', security.dockerSocketAccess ? 'Yes' : 'No'],
+  ['Host networking', security.hostNetworking ? 'Yes' : 'No'],
+  ['Host PID namespace', security.hostPidNamespace ? 'Yes' : 'No'],
+  ['Host filesystem mounts', security.hostFilesystemMounts ? 'Yes' : 'No'],
+  ['Host devices', security.hostDevices ? 'Yes' : 'No'],
+  [
+    'Additional Linux capabilities',
+    security.additionalLinuxCapabilities.length > 0
+      ? security.additionalLinuxCapabilities.join(', ')
+      : 'No',
+  ],
+];
+---
+
+<div class="prose max-w-none overflow-x-auto">
+  <table class="table-fixed" style="margin-block: 0;">
+    <colgroup>
+      <col />
+      <col class="w-32" />
+    </colgroup>
+    <thead>
+      <tr>
+        <th>Server access</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {
+        rows.map(([label, value]) => (
+          <tr>
+            <td>{label}</td>
+            <td>{value}</td>
+          </tr>
+        ))
+      }
+    </tbody>
+  </table>
+</div>

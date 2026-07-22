@@ -95,6 +95,25 @@ const templates = defineCollection({
           description: 'Timezone used by the application.',
         },
       ]),
+    security: z
+      .object({
+        privilegedMode: z.boolean(),
+        dockerSocketAccess: z.boolean(),
+        hostNetworking: z.boolean(),
+        hostPidNamespace: z.boolean(),
+        hostFilesystemMounts: z.boolean(),
+        hostDevices: z.boolean(),
+        additionalLinuxCapabilities: z.array(z.string()),
+      })
+      .default({
+        privilegedMode: false,
+        dockerSocketAccess: false,
+        hostNetworking: false,
+        hostPidNamespace: false,
+        hostFilesystemMounts: false,
+        hostDevices: false,
+        additionalLinuxCapabilities: [],
+      }),
     // Dummy registry stats until the real backend supplies them.
     stats: z
       .object({
