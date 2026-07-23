@@ -123,18 +123,16 @@ const feedbackVersion = stats.appVersions[0].replace(/\s*\(latest\)$/, '');
         <div class="flex shrink-0 items-center gap-2">
           <a
             href={deployUrl(template.id)}
-            class="inline-flex items-center gap-2 rounded-lg bg-[#864ffc] px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-[#7440e0]"
+            class="group inline-flex h-10 items-center gap-2 rounded-full bg-gradient-to-r from-[#9b6dff] via-[#864ffc] to-[#6d3adf] p-1 pr-4 text-sm font-medium leading-none text-white shadow-[0_2px_8px_rgba(134,79,252,0.24)] transition-[filter,box-shadow] hover:brightness-105 hover:shadow-[0_3px_10px_rgba(134,79,252,0.3)]"
           >
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              class="size-4"
-            >
-              <path d="M13 2 3 14h7l-1 8 10-12h-7z" stroke-linejoin="round"></path>
-            </svg>
-            Deploy to Coolify
+            <span class="grid size-8 shrink-0 place-items-center rounded-full bg-white">
+              <img
+                src={withBase('/coolify.svg')}
+                alt=""
+                class="size-4.5 transition-transform duration-200 group-hover:scale-105"
+              />
+            </span>
+            <span class="relative -top-px">Deploy with Coolify</span>
           </a>
           {
             serviceLinks.map((link) => (
